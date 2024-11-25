@@ -1,0 +1,25 @@
+target1   ansible_host=192.168.0.14    ansible_user=lubuntu1         
+# ansible_ssh_pass=qwe
+target2   ansible_host=192.168.0.11    
+# ansible_ssh_pass=qwe
+target3   ansible_host=192.168.0.19    ansible_user=kali             
+# ansible_ssh_pass=kali
+target4   ansible_host=192.168.0.12
+
+[vm_os]
+target1
+target3
+
+[vm_no_os]
+target2
+target4
+
+#[vm_no_os:vars]  #перенесли переменные в файл ~/ansible/group_vars/vm_no_os.yml
+#ansible_user=ubuntuserver1
+
+[ALL_servers:children]
+vm_os
+vm_no_os
+
+#ansible target1 -m ping -i inventory
+# komanda ansible dlia ping ispolzuia file inventory
