@@ -1,0 +1,41 @@
+---
+- name: Install Apache and Upload my Web Page
+  hosts: vm_no_os
+  become: yes
+
+  vars:
+    source_file: ./MyWebSite/index.html
+    destin_file: /var/www/html
+
+
+  tasks:
+  - name: Install Apache Web Server
+    apt:
+      name: apache2
+      state: present
+      update_cache: yes
+  
+  - name: Copy My HomePage to servers
+    copy:
+      src: "{{ source_file }}"
+      dest: "{{ destin_file  }}"
+      mode: 0555
+    notify: Restart Apache #tyt zovem handlers
+
+  - name: Start WebServer and make it enable on boot
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+      
+#  - name: Run echo command
+#    shell: echo ""{{ source_file }}" , "{{ destin_file  }}""    
+
+#  - debug:
+#      msg: "{{ source_file }}, {{ destin_file }}"
+
+  handlers:
+  - name: Restart Apache # imya handlers kotorii zovem
+    service:
+      name: apache2
+      state: restarted
