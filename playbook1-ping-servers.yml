@@ -1,0 +1,16 @@
+---
+- name: Test Connection to my server
+  hosts: all
+#  become: yes
+  tasks:
+  - name: Ping my servers
+    ping:
+
+  - name: What is the operating system
+    debug:
+      var: ansible_lsb
+
+
+  - name: What is the os family
+    debug:
+      var: ansible_os_family

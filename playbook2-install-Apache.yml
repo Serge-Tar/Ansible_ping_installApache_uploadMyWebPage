@@ -1,0 +1,36 @@
+---
+- name: Install default Apache Web Server
+  hosts: all
+  become: yes
+#  become_user: root
+#  become_method: sudo
+  tasks:
+
+  - block: # Install for "Debian"
+
+     - name: Install Apache WebServer
+       apt:
+         name: apache2
+         state: present
+         update_cache: yes
+
+     - name: Start Apache and Enable it on the every boot
+       service: name=apache2 state=started enabled=yes
+
+    when: ansible_os_family == "Debian"
+
+  - block: # Install for "RedHat"
+
+     - name: Install Apache WebServer
+       yum:
+         name: httpd
+         state: present
+         update_cache: yes
+
+     - name: Start Apache and Enable it on the every boot
+       service: name=httpd state=started enabled=yes
+
+    when: ansible_os_family == "RedHat"
+
+# instaliruet webserver Apache na host i zapuskaet ego i perezapuskaet
+# ansible-playbook playbook2-install-Apache.yml -b -k -K 
